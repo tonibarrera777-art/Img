@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Cumpleaños, María Isabel ❤️</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tone.js for soft sound effects & melodic background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ruby: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        velvet: {
+                            900: '#1b0308',
+                            950: '#0f0104',
+                        },
+                        gold: {
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                        }
+                    },
+                    fontFamily: {
+                        cursive: ['"Alex Brush"', 'cursive'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0104;
+            color: #fce7f3;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* Ambient glowing effects */
+        .glow-red {
+            box-shadow: 0 0 35px -5px rgba(225, 29, 72, 0.45);
+        }
+        .glow-text-red {
+            text-shadow: 0 0 20px rgba(244, 63, 94, 0.65), 0 0 40px rgba(225, 29, 72, 0.35);
+        }
+        .glow-gold {
+            text-shadow: 0 0 15px rgba(250, 204, 21, 0.6);
+        }
+
+        /* Glassmorphism card */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(225, 29, 72, 0.07) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 63, 94, 0.18);
+        }
+
+        /* Enhanced reading and accessible sizing */
+        .readable-text {
+            letter-spacing: 0.015em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Large comfortable text mode toggle */
+        body.extra-large-text .letter-body-p {
+            font-size: 1.3rem !important; /* 20.8px */
+            line-height: 2.15rem !important;
+            font-weight: 450 !important;
+        }
+        body.extra-large-text .readable-desc {
+            font-size: 1.2rem !important; /* 19.2px */
+            line-height: 1.95rem !important;
+        }
+        body.extra-large-text .rose-secret-text {
+            font-size: 1.15rem !important;
+            line-height: 1.75rem !important;
+        }
+        body.extra-large-text .ai-generated-text {
+            font-size: 1.22rem !important;
+            line-height: 2.05rem !important;
+        }
+        body.extra-large-text p {
+            font-size: 1.1rem;
+            line-height: 1.8rem;
+        }
+
+        /* Ambient shimmer and golden pulse animation for Gemini AI card */
+        @keyframes shimmer-gold {
+            0% { border-color: rgba(244, 63, 94, 0.35); box-shadow: 0 0 15px rgba(225, 29, 72, 0.2); }
+            50% { border-color: rgba(250, 204, 21, 0.7); box-shadow: 0 0 25px rgba(250, 204, 21, 0.35); }
+            100% { border-color: rgba(244, 63, 94, 0.35); box-shadow: 0 0 15px rgba(225, 29, 72, 0.2); }
+        }
+        .ai-shimmer-box {
+            animation: shimmer-gold 3.5s ease-in-out infinite;
+        }
+
+        /* Canvas background behind interactive layers */
+        #petals-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0104;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #881337;
+            border-radius: 9999px;
+        }
+
+        /* Envelope 3D Fold Transition */
+        .envelope-flap {
+            transform-origin: top;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .envelope-open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        .letter-content {
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+        }
+        .envelope-open .letter-content {
+            transform: translateY(-80px);
+            opacity: 1;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased relative min-h-screen extra-large-text">
+
+    <!-- Falling Red Rose Petals Canvas -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Floating Accessibility & Audio Controls Bar -->
+    <div id="floating-controls-bar" class="fixed top-4 right-3 sm:right-4 z-50 flex items-center gap-2 transition-all duration-500 ease-out transform translate-y-0 opacity-100">
+        <!-- Dedicated Font Size Switcher: Predeterminada Cómoda (Grande) -->
+        <button id="font-toggle-btn" class="flex items-center gap-1.5 bg-ruby-900 border border-gold-400 ring-1 ring-gold-400/40 text-white font-semibold px-3 py-2 rounded-full backdrop-blur-md shadow-lg transition-all active:scale-95 hover:border-gold-400 hover:shadow-ruby-900/50" aria-label="Cambiar tamaño de texto">
+            <span id="font-btn-icon" class="text-gold-300 font-bold text-sm tracking-wider">A+</span>
+            <span id="font-btn-label" class="text-xs font-semibold text-gold-300">Cómoda</span>
+            <span id="font-btn-badge" class="w-2 h-2 rounded-full bg-gold-400 animate-pulse inline-block shadow-sm"></span>
+        </button>
+
+        <!-- Floating Audio Control Button -->
+        <button id="audio-toggle-btn" class="flex items-center gap-2 bg-ruby-950/90 border border-ruby-500/40 text-ruby-200 px-3.5 py-2 rounded-full backdrop-blur-md shadow-lg transition-all active:scale-95 hover:border-ruby-400">
+            <span id="audio-icon" class="text-ruby-400">
+                <!-- Music Note SVG -->
+                <svg class="w-4 h-4 animate-bounce" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"></path>
+                </svg>
+            </span>
+            <span id="audio-text" class="text-xs tracking-wider uppercase font-semibold text-rose-100">Música</span>
+        </button>
+    </div>
+
+    <!-- Hero Screen Container -->
+    <main class="relative z-20 flex flex-col items-center justify-center min-h-screen px-5 py-14 text-center overflow-hidden">
+        <!-- Ambient radial glow -->
+        <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-ruby-600/20 rounded-full blur-[90px] pointer-events-none"></div>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-96 h-96 bg-ruby-900/15 rounded-full blur-[110px] pointer-events-none"></div>
+
+        <!-- Top decorative badge with dynamic age -->
+        <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-ruby-950/90 border border-ruby-400/40 text-gold-300 text-sm font-semibold tracking-wider uppercase mb-6 shadow-md animate-float">
+            <span>✨</span>
+            <span>17 de Septiembre • <span class="mariaisabel-age">19</span> Años</span>
+            <span>✨</span>
+        </div>
+
+        <!-- Main Heading Dedicated to María Isabel -->
+        <h2 class="text-rose-300 font-cinzel text-sm sm:text-base uppercase tracking-[0.25em] mb-2 font-semibold">
+            Una dedicatoria desde el alma
+        </h2>
+        
+        <h1 class="text-5xl sm:text-6xl font-cursive font-normal text-white glow-text-red leading-tight mb-2">
+            Feliz Cumpleaños
+        </h1>
+
+        <h2 class="text-3xl sm:text-4xl font-serif italic text-rose-100 font-bold mb-6 tracking-wide drop-shadow-md">
+            María Isabel
+        </h2>
+
+        <!-- Emotional subtext with exact calculated age -->
+        <p class="readable-desc max-w-sm sm:max-w-md text-base sm:text-lg text-rose-50 font-normal leading-relaxed mb-8 px-2 readable-text drop-shadow">
+            Naciste un <strong class="text-white font-semibold underline decoration-ruby-500 underline-offset-4">17 de septiembre de 2007</strong>. Hoy celebras tus <strong class="text-gold-300 font-bold"><span class="mariaisabel-age">19</span> años</strong>; celebro tu vida, tu belleza y el milagro de haberte encontrado.
+        </p>
+
+        <!-- Call to action button with pulse effect -->
+        <a href="#distancia-section" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-ruby-700 via-ruby-600 to-rose-700 text-white font-semibold text-base tracking-wide shadow-xl glow-red transition-all duration-300 active:scale-95">
+            <span>Comenzar este viaje</span>
+            <svg class="w-5 h-5 transition-transform group-hover:translate-y-0.5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </a>
+
+        <!-- Romantic quote badge -->
+        <div class="mt-10 text-xs sm:text-sm uppercase tracking-[0.2em] text-rose-300 font-cinzel font-medium bg-ruby-950/60 px-4 py-2 rounded-full border border-ruby-800/40">
+            Conocerte en Facebook fue el inicio del destino
+        </div>
+    </main>
+
+    <!-- Distance Section: Nicaragua to Spain -->
+    <section id="distancia-section" class="relative z-20 px-4 py-16 max-w-lg mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+            <!-- Background accent -->
+            <div class="absolute -right-10 -top-10 w-32 h-32 bg-ruby-600/20 rounded-full blur-2xl"></div>
+
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-ruby-900/80 border border-ruby-400/40 text-ruby-300 mb-4 shadow-inner">
+                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-3">
+                Un Mismo Latido
+            </h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal leading-relaxed mb-6">
+                Compartimos las mismas raíces y un mismo sentir. Aunque hoy un océano nos separe temporalmente, no existe distancia capaz de apagar lo que siento por ti.
+            </p>
+
+            <!-- Distance Visual Map / Arc -->
+            <div class="bg-velvet-950/80 rounded-2xl p-5 border border-ruby-500/30 mb-6">
+                <div class="flex items-center justify-between text-left">
+                    <!-- Nicaragua Point -->
+                    <div class="space-y-1">
+                        <span class="text-[11px] uppercase tracking-wider text-rose-300 font-semibold block">Tu lugar</span>
+                        <h4 class="text-white text-base font-bold">Nicaragua</h4>
+                        <p class="text-xs sm:text-sm text-rose-200 font-medium">Donde estás tú</p>
+                        <div class="text-xs sm:text-sm text-gold-300 font-mono font-semibold" id="time-nicaragua">--:--:--</div>
+                    </div>
+
+                    <!-- Heart Connection Pulse -->
+                    <div class="flex flex-col items-center px-2">
+                        <span class="text-xs text-rose-300 uppercase tracking-wider font-mono font-semibold mb-1">~8,500 km</span>
+                        <div class="relative flex items-center justify-center">
+                            <div class="w-16 h-[3px] bg-gradient-to-r from-ruby-600 via-rose-400 to-ruby-600"></div>
+                            <span class="absolute text-base animate-pulse">❤️</span>
+                        </div>
+                        <span class="text-xs text-rose-200/90 font-medium mt-1">Conectados</span>
+                    </div>
+
+                    <!-- Spain Point -->
+                    <div class="space-y-1 text-right">
+                        <span class="text-[11px] uppercase tracking-wider text-rose-300 font-semibold block">Mi lugar</span>
+                        <h4 class="text-white text-base font-bold">España</h4>
+                        <p class="text-xs sm:text-sm text-rose-200 font-medium">Pensando en ti</p>
+                        <div class="text-xs sm:text-sm text-gold-300 font-mono font-semibold" id="time-spain">--:--:--</div>
+                    </div>
+                </div>
+
+                <!-- Distance quote -->
+                <div class="mt-4 pt-3 border-t border-ruby-800/50 text-xs sm:text-sm text-rose-100 font-medium italic">
+                    "La distancia solo pone a prueba lo que el corazón ya sabe de sobra: eres tú."
+                </div>
+            </div>
+
+            <!-- Facebook Origin note -->
+            <div class="flex items-center gap-3 text-left p-4 rounded-xl bg-ruby-950/60 border border-ruby-700/40">
+                <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/50 flex items-center justify-center text-blue-300 flex-shrink-0">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </div>
+                <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal leading-relaxed">
+                    Un simple mensaje en <strong class="text-white font-semibold">Facebook</strong> bastó para que nuestros caminos se cruzaran a miles de kilómetros.
+                </p>
+            </div>
+
+            <!-- Transition Button to Heart Connection -->
+            <div class="mt-6 text-center">
+                <button onclick="smoothScrollTo('corazon-section', 150)" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ruby-900/80 border border-ruby-500/40 text-rose-100 hover:text-white hover:border-gold-400 text-sm font-medium transition-all active:scale-95 shadow-md">
+                    <span>Ver cómo se unen nuestros corazones</span>
+                    <span class="text-gold-300">❤️</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Two Photos Forming a Heart -->
+    <section id="corazon-section" class="relative z-20 px-4 py-12 max-w-lg mx-auto text-center">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-ruby-500/40 shadow-2xl">
+            <!-- Decorative background light -->
+            <div class="absolute -left-10 -bottom-10 w-40 h-40 bg-ruby-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold">Nuestra unión</span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mt-1 mb-2">Dos Vidas, Un Solo Corazón</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal leading-relaxed mb-6">
+                Dos almas destinadas a encontrarse. Toca el botón para ver cómo cualquier distancia desaparece y formamos un solo latido.
+            </p>
+
+            <!-- Heart Visual Interactive Arena (Fotos definidas fijas desde el código) -->
+            <div class="relative w-full max-w-xs sm:max-w-sm mx-auto my-4 py-4 flex items-center justify-center min-h-[290px]">
+                
+                <!-- Dual Half Heart Stage Container -->
+                <div id="heart-stage" class="relative flex items-center justify-center transition-all duration-700 ease-out gap-4 sm:gap-6">
+                    
+                    <!-- Left Half: María Isabel's Photo Lobe -->
+                    <div id="left-heart-half" class="relative flex flex-col items-center transition-all duration-700 ease-out transform">
+                        <!-- Photo Frame Shaped for Heart Left Side -->
+                        <div class="group relative w-32 h-44 sm:w-36 sm:h-48 rounded-t-full rounded-bl-[45px] rounded-br-lg border-2 border-ruby-400/80 overflow-hidden shadow-[0_10px_25px_rgba(225,29,72,0.4)] bg-gradient-to-b from-ruby-900 to-velvet-950">
+                            <!-- FOTO DE MARÍA ISABEL: Cambia 'src' por tu imagen local (ej: src="./maria-isabel.jpg") -->
+                            <img id="her-photo-img" src="IMG-20260906-WA0012.jpg" alt="María Isabel" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            
+                            <!-- Overlay Label -->
+                            <div class="absolute inset-x-0 bottom-0 py-1.5 bg-gradient-to-t from-velvet-950 via-velvet-950/80 to-transparent text-center">
+                                <span class="text-xs sm:text-sm font-semibold text-rose-100">María Isabel</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Glowing Heart Connector Icon -->
+                    <div id="heart-center-pulse" class="relative z-10 flex flex-col items-center justify-center transition-all duration-500">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-ruby-700 to-rose-500 border border-gold-400/80 flex items-center justify-center text-white text-base shadow-[0_0_18px_rgba(244,63,94,0.8)] animate-pulse">
+                            ❤️
+                        </div>
+                    </div>
+
+                    <!-- Right Half: His Photo Lobe -->
+                    <div id="right-heart-half" class="relative flex flex-col items-center transition-all duration-700 ease-out transform">
+                        <!-- Photo Frame Shaped for Heart Right Side -->
+                        <div class="group relative w-32 h-44 sm:w-36 sm:h-48 rounded-t-full rounded-br-[45px] rounded-bl-lg border-2 border-ruby-400/80 overflow-hidden shadow-[0_10px_25px_rgba(225,29,72,0.4)] bg-gradient-to-b from-ruby-900 to-velvet-950">
+                            <!-- TU FOTO: Cambia 'src' por tu imagen local (ej: src="./mi-foto.jpg") -->
+                            <img id="him-photo-img" src="20240917_044836.jpg" alt="Tú" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            
+                            <!-- Overlay Label -->
+                            <div class="absolute inset-x-0 bottom-0 py-1.5 bg-gradient-to-t from-velvet-950 via-velvet-950/80 to-transparent text-center">
+                                <span class="text-xs sm:text-sm font-semibold text-rose-100">Junto a ti</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Toggle Button to Merge or Separate Hearts -->
+            <div class="mt-2 text-center">
+                <button id="toggle-heart-union-btn" class="px-7 py-3 rounded-full bg-gradient-to-r from-ruby-700 via-rose-600 to-ruby-700 text-white font-semibold text-sm sm:text-base tracking-wide shadow-xl glow-red active:scale-95 transition-all">
+                    ❤️ Toca para unir nuestros corazones
+                </button>
+            </div>
+
+            <!-- Heart United Romantic Statement (Reveals when merged) -->
+            <div id="heart-united-card" class="hidden mt-6 p-4 sm:p-5 rounded-2xl bg-velvet-950/90 border border-gold-400/50 text-center animate-fade-in shadow-xl">
+                <span class="text-sm sm:text-base text-gold-300 font-bold block mb-1">✨ ¡Un solo corazón, un mismo destino! ✨</span>
+                <p class="readable-desc text-xs sm:text-sm text-rose-100 font-normal leading-relaxed">
+                    "Podrán separarnos miles de kilómetros y mares enteros, pero cuando dos personas están destinadas a amarse, cada latido late en el mismo compás."
+                </p>
+                <div class="mt-4 pt-3 border-t border-ruby-800/50">
+                    <button onclick="smoothScrollTo('carta-section', 200)" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-ruby-900/90 border border-ruby-500/50 text-white text-xs sm:text-sm font-semibold tracking-wide hover:border-gold-400 active:scale-95 transition-all shadow-md">
+                        <span>Continuar a mi carta para ti</span>
+                        <svg class="w-4 h-4 text-gold-300 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Love Letter Section -->
+    <section id="carta-section" class="relative z-20 px-4 py-10 max-w-lg mx-auto">
+        <div class="text-center mb-6">
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold">Confesión íntima</span>
+            <h3 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Mi Carta Para Ti</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-200 mt-1 font-medium">Toca el sobre rojo para abrir mis sentimientos</p>
+        </div>
+
+        <!-- Envelope & Letter Container -->
+        <div id="envelope-wrapper" class="relative cursor-pointer transition-transform duration-300 active:scale-[0.98]">
+            
+            <!-- Master-Engineered Envelope Box with Dedicated Layout Zones -->
+            <div id="envelope-box" class="relative mx-auto w-full max-w-sm min-h-[320px] bg-gradient-to-b from-ruby-900 via-velvet-900 to-velvet-950 rounded-3xl border-2 border-ruby-500/50 hover:border-gold-400/60 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_35px_rgba(225,29,72,0.3)] p-6 flex flex-col items-center justify-between overflow-hidden transition-all duration-700">
+                
+                <!-- Inner fine stationery border accent -->
+                <div class="absolute inset-2.5 rounded-2xl border border-ruby-500/25 pointer-events-none"></div>
+
+                <!-- Geometric Envelope Flap Ornamentation with Subtle Glow -->
+                <div class="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-ruby-800/50 via-ruby-950/30 to-transparent pointer-events-none"></div>
+                <div class="w-full relative flex flex-col items-center pt-1 z-10">
+                    <!-- Flap Fold Line -->
+                    <div class="w-3/4 h-[1.5px] bg-gradient-to-r from-transparent via-gold-400/50 to-transparent mb-3"></div>
+                    
+                    <!-- 3D Royal Wax Seal Emblem (Physically separated at the flap apex) -->
+                    <div id="wax-seal" class="relative w-16 h-16 rounded-full bg-gradient-to-br from-rose-600 via-ruby-700 to-velvet-950 border-2 border-gold-400 shadow-[0_6px_25px_rgba(244,63,94,0.65),inset_0_2px_4px_rgba(255,255,255,0.4)] flex items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                        <div class="w-12 h-12 rounded-full border border-gold-300/40 bg-ruby-900/60 flex items-center justify-center shadow-inner">
+                            <span class="text-2xl filter drop-shadow animate-pulse">💌</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dedicated Recipient Plaque (Guaranteed zero collisions regardless of font scale) -->
+                <div class="relative z-10 w-full my-2 px-5 py-3.5 rounded-2xl bg-velvet-950/85 border border-ruby-500/40 text-center shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)] backdrop-blur-sm">
+                    <span class="block text-xs sm:text-sm font-cinzel tracking-[0.25em] text-rose-300 uppercase font-semibold mb-1">
+                        Para mi preciosa
+                    </span>
+                    <h4 class="font-cursive text-3xl sm:text-4xl text-white font-normal glow-text-red leading-tight">
+                        María Isabel
+                    </h4>
+                </div>
+
+                <!-- Tactile Call-To-Action Pill Button -->
+                <div class="relative z-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-ruby-950 via-ruby-900 to-ruby-950 border border-gold-400/60 shadow-lg text-gold-300 text-xs sm:text-sm font-semibold tracking-wide animate-pulse">
+                    <span>✨</span>
+                    <span>Toca el sobre para abrir</span>
+                    <span>✨</span>
+                </div>
+            </div>
+
+            <!-- The Unfolded Letter (Shown on click) -->
+            <div id="unfolded-letter" class="hidden mt-6 glass-card rounded-3xl p-6 sm:p-8 text-left border-ruby-400/40 shadow-2xl animate-fade-in">
+                <div class="flex items-center justify-between border-b border-ruby-800/60 pb-4 mb-5">
+                    <div>
+                        <p class="font-cursive text-3xl sm:text-4xl text-rose-200 font-normal">Mi reina hermosa,</p>
+                        <p class="text-xs sm:text-sm text-gold-300 font-semibold uppercase tracking-wider mt-0.5">17 de Septiembre</p>
+                    </div>
+                    <span class="text-3xl">🌹</span>
+                </div>
+
+                <div class="space-y-4 text-base sm:text-lg text-rose-50 leading-relaxed font-normal readable-text">
+                    <p class="letter-body-p">
+                        Hoy celebras tus hermosos <strong class="text-gold-300 font-semibold"><span class="mariaisabel-age">19</span> años</strong> de vida, y aunque hoy no puedo darte ese abrazo cálido que tanto guardo para ti, quiero que sepas que eres la dueña absoluta de cada uno de mis pensamientos.
+                    </p>
+                    <p class="letter-body-p">
+                        Aún recuerdo con una sonrisa cómo empezó todo por Facebook. Un día cualquiera, una conversación que parecía una casualidad, y de pronto me encontré ante una niña preciosa, con una luz que traspasa cualquier pantalla y que conquistó mi corazón por completo.
+                    </p>
+                    <p class="letter-body-p">
+                        Aunque hoy nos separen miles de kilómetros, sigo trabajando y soñando con el momento en que pueda mirarte de frente a los ojos, entregarte ese ramo de rosas que tanto te mereces y susurrarte al oído lo infinitamente valiosa que eres para mí.
+                    </p>
+                    <p class="letter-body-p italic text-rose-100 font-serif border-l-4 border-ruby-500 pl-4 py-1.5 font-medium bg-ruby-950/40 rounded-r-lg">
+                        "Toda tu esencia transmite una luz única, pero lo que realmente te hace deslumbrante es la pureza, dulzura y bondad que llevas en tu alma."
+                    </p>
+                    <p class="letter-body-p">
+                        Que Dios bendiga cada paso que des en estos <strong class="text-gold-300 font-semibold"><span class="mariaisabel-age">19</span> años</strong>, que cumpla todos los anhelos de tu corazón y que esta nueva etapa esté llena de salud, dicha y éxitos. Feliz cumpleaños, mi niña linda.
+                    </p>
+                </div>
+
+                <div class="mt-7 pt-4 border-t border-ruby-800/60 flex items-center justify-between gap-4">
+                    <div>
+                        <p class="text-xs sm:text-sm text-rose-300 uppercase tracking-wider font-semibold">Con todo mi amor,</p>
+                        <p class="font-cursive text-2xl sm:text-3xl text-white">Siempre tuyo ❤️</p>
+                    </div>
+                    <button id="close-letter-btn" class="text-xs sm:text-sm text-white font-semibold px-4 py-2 rounded-xl bg-ruby-900/90 border border-ruby-500/60 hover:bg-ruby-800 active:scale-95 transition-all shadow-md flex items-center gap-1.5">
+                        <span>Guardar y continuar</span>
+                        <span>🌹</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Red Roses Garden -->
+    <section id="rosas-section" class="relative z-20 px-4 py-12 max-w-lg mx-auto">
+        <div class="text-center mb-6">
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold">Cada detalle florece por ti</span>
+            <h3 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Un Jardín de Rosas Rojas</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-200 mt-1 font-medium">Toca cada rosa para revelar una razón de por qué eres tan especial</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3.5">
+            <!-- Rose 1 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(1, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa I</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por esa sonrisa que me alegra el día incluso a más de 8,000 kilómetros."
+                </div>
+            </div>
+
+            <!-- Rose 2 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(2, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa II</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por ser esa niña preciosa, dulce y auténtica que encontré en Facebook."
+                </div>
+            </div>
+
+            <!-- Rose 3 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(3, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa III</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por la ternura de tu corazón y la dulzura con la que iluminas cada uno de mis días."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Red Roses Garden -->
+    <section id="rosas-section" class="relative z-20 px-4 py-12 max-w-lg mx-auto">
+        <div class="text-center mb-6">
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold">Cada detalle florece por ti</span>
+            <h3 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Un Jardín de Rosas Rojas</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-200 mt-1 font-medium">Toca cada rosa para revelar una razón de por qué eres tan especial</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3.5">
+            <!-- Rose 1 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(1, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa I</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por esa sonrisa que me alegra el día incluso a más de 8,000 kilómetros."
+                </div>
+            </div>
+
+            <!-- Rose 2 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(2, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa II</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por ser esa niña preciosa, dulce y auténtica que encontré en Facebook."
+                </div>
+            </div>
+
+            <!-- Rose 3 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(3, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa III</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por compartir las mismas raíces de nuestra amada Nicaragua."
+                </div>
+            </div>
+
+            <!-- Rose 4 -->
+            <div class="rose-card glass-card p-4 rounded-2xl cursor-pointer border border-ruby-600/40 transition-all duration-300 active:scale-95 text-center" onclick="revealRose(4, this)">
+                <div class="text-4xl mb-2 filter drop-shadow">🌹</div>
+                <h4 class="text-sm sm:text-base font-bold text-white mb-1">Rosa IV</h4>
+                <p class="rose-hint text-xs sm:text-sm text-gold-300 font-semibold">Toca para descubrir</p>
+                <div class="rose-secret hidden text-sm sm:text-base text-rose-50 font-medium mt-2 italic leading-snug rose-secret-text">
+                    "Por la promesa de que muy pronto este amor se vivirá sin distancias."
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback badge -->
+        <div id="all-roses-found" class="hidden mt-5 p-5 rounded-2xl bg-ruby-950/90 border border-gold-400/50 text-center animate-fade-in shadow-xl">
+            <span class="text-sm sm:text-base text-gold-300 font-bold block mb-3">✨ ¡Has completado todo tu ramo de rosas rojas! ✨</span>
+            <button onclick="smoothScrollTo('poeta-ai-section', 200)" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-ruby-700 to-rose-600 text-white text-xs sm:text-sm font-semibold tracking-wide shadow-md active:scale-95 transition-all">
+                <span>Descubrir versos creados para ti</span>
+                <span>✨</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- NEW SECTION: Gemini AI Romantic Poetry & Divine Blessings -->
+    <section id="poeta-ai-section" class="relative z-20 px-4 py-12 max-w-lg mx-auto text-center">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-ruby-500/40 shadow-2xl">
+            <!-- Ambient romantic glow -->
+            <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-ruby-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-ruby-900 to-rose-800 border border-gold-400/50 text-gold-300 mb-3 shadow-lg">
+                <span class="text-2xl animate-pulse">✨</span>
+            </div>
+
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold block">Inspiración Infinita con Inteligencia Artificial</span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mt-1 mb-2">El Poeta de Nuestro Amor</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal leading-relaxed mb-6">
+                Genera versos, oraciones y dedicatorias exclusivas para tus <span class="mariaisabel-age font-bold text-gold-300">19</span> años con el poder de Gemini. Toca un tema o escribe lo que dicte tu corazón.
+            </p>
+
+            <!-- Pre-configured Romantic AI Chips -->
+            <div class="flex flex-wrap justify-center gap-2 mb-5">
+                <button type="button" class="ai-chip text-xs sm:text-sm px-3.5 py-2 rounded-full bg-ruby-950/90 border border-ruby-500/40 text-rose-200 hover:border-gold-400 hover:text-white transition-all active:scale-95 shadow-sm" data-prompt="Escribe un poema emotivo y dulce sobre nuestro amor a distancia, recordando que ningún océano apagará lo que sentimos por ti en tus 19 años.">
+                    🌹 Amor sin distancias
+                </button>
+                <button type="button" class="ai-chip text-xs sm:text-sm px-3.5 py-2 rounded-full bg-ruby-950/90 border border-ruby-500/40 text-rose-200 hover:border-gold-400 hover:text-white transition-all active:scale-95 shadow-sm" data-prompt="Escribe una hermosa oración y bendición de Dios pidiendo por la salud, felicidad y sueños de María Isabel al celebrar sus 19 años.">
+                    🙏 Bendición de Dios
+                </button>
+                <button type="button" class="ai-chip text-xs sm:text-sm px-3.5 py-2 rounded-full bg-ruby-950/90 border border-ruby-500/40 text-rose-200 hover:border-gold-400 hover:text-white transition-all active:scale-95 shadow-sm" data-prompt="Escribe versos románticos rememorando cómo un mensaje casual en Facebook se convirtió en la bendición de encontrar a la niña más preciosa.">
+                    💌 El destino en Facebook
+                </button>
+                <button type="button" class="ai-chip text-xs sm:text-sm px-3.5 py-2 rounded-full bg-ruby-950/90 border border-ruby-500/40 text-rose-200 hover:border-gold-400 hover:text-white transition-all active:scale-95 shadow-sm" data-prompt="Escribe una carta íntima sobre la promesa del día en que nos abracemos por primera vez y te entregue tu ramo de rosas.">
+                    ✈️ Nuestro reencuentro
+                </button>
+            </div>
+
+            <!-- Custom User Prompt Input Field -->
+            <div class="relative w-full mb-4 text-left">
+                <label for="ai-custom-prompt" class="block text-xs uppercase tracking-wider text-rose-300 font-semibold mb-1.5 ml-1">
+                    O escribe tu propia inspiración:
+                </label>
+                <div class="relative">
+                    <input type="text" id="ai-custom-prompt" placeholder="Ej: Unos versos para empezar mi mañana feliz..." class="w-full px-4 py-3 rounded-2xl bg-velvet-950/90 border border-ruby-600/50 text-white placeholder-rose-300/40 text-sm sm:text-base focus:outline-none focus:border-gold-400 shadow-inner pr-11">
+                    <button id="clear-prompt-btn" type="button" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-rose-400 hover:text-white text-base" title="Borrar">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trigger AI Generation Button -->
+            <button id="generate-ai-btn" class="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-ruby-700 via-rose-600 to-ruby-700 text-white font-semibold text-sm sm:text-base tracking-wide shadow-xl glow-red active:scale-95 transition-all flex items-center justify-center gap-2">
+                <span>✨ Crear dedicatoria con IA</span>
+            </button>
+
+            <!-- Loading Spinner State -->
+            <div id="ai-loading-state" class="hidden mt-6 p-6 rounded-2xl bg-velvet-950/90 border border-ruby-500/40 text-center animate-pulse shadow-xl">
+                <div class="w-10 h-10 mx-auto rounded-full border-2 border-gold-400 border-t-transparent animate-spin mb-3"></div>
+                <h5 class="text-sm sm:text-base text-gold-300 font-bold uppercase tracking-wider mb-1">
+                    Consultando las estrellas y el corazón...
+                </h5>
+                <p class="text-xs sm:text-sm text-rose-200">
+                    Gemini está componiendo versos únicos para ti, María Isabel ✨
+                </p>
+            </div>
+
+            <!-- AI Output Result Card -->
+            <div id="ai-result-card" class="hidden mt-6 p-5 sm:p-7 rounded-3xl bg-velvet-950/95 border-2 border-gold-400/60 text-left shadow-2xl ai-shimmer-box relative">
+                <div class="flex items-center justify-between border-b border-ruby-800/60 pb-3 mb-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">💌</span>
+                        <span class="text-xs sm:text-sm font-cinzel text-gold-300 uppercase tracking-widest font-bold">Inspiración Dedicada</span>
+                    </div>
+                    <!-- Copy Button -->
+                    <button id="copy-ai-btn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-ruby-900/80 border border-ruby-500/50 text-gold-300 text-xs hover:text-white hover:border-gold-400 active:scale-90 transition-all shadow" title="Copiar poema">
+                        <span>📋</span>
+                        <span>Copiar</span>
+                    </button>
+                </div>
+
+                <!-- Rendered Generated Content -->
+                <div id="ai-poem-content" class="ai-generated-text text-base sm:text-lg text-rose-50 leading-relaxed font-normal readable-text whitespace-pre-line">
+                </div>
+
+                <!-- Footer Action Buttons inside the Result Card -->
+                <div class="mt-6 pt-4 border-t border-ruby-800/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <button id="regenerate-ai-btn" type="button" class="w-full sm:w-auto text-xs sm:text-sm text-rose-200 hover:text-white font-medium px-4 py-2 rounded-xl bg-ruby-950 border border-ruby-700/50 transition-colors">
+                        🔄 Generar otra versión
+                    </button>
+                    <button onclick="smoothScrollTo('deseo-section', 200)" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-ruby-900/90 border border-gold-400/60 text-gold-300 text-xs sm:text-sm font-semibold hover:text-white active:scale-95 transition-all shadow-md">
+                        <span>Continuar a tu deseo</span>
+                        <span>🎂</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Make a Birthday Wish Interactive Section -->
+    <section id="deseo-section" class="relative z-20 px-4 py-12 max-w-lg mx-auto text-center">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden border border-ruby-500/40">
+            <span class="text-xs sm:text-sm font-cinzel text-rose-300 uppercase tracking-widest font-semibold">Momento sagrado</span>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-white mb-2 mt-1">Pide Tu Deseo de Cumpleaños</h3>
+            <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal mb-6">Cierra los ojos, piensa en lo que más anhela tu corazón y toca la velita de tus <span class="mariaisabel-age font-bold text-gold-300">19</span> años</p>
+
+            <!-- Birthday Candle Animation -->
+            <div class="relative flex flex-col items-center justify-center my-6">
+                <!-- Flame / Sparkle -->
+                <div id="candle-flame" class="w-6 h-8 bg-gradient-to-t from-orange-500 via-yellow-300 to-white rounded-full blur-[1px] animate-pulse cursor-pointer shadow-[0_0_20px_#f59e0b] transition-all duration-500"></div>
+                <!-- Wick -->
+                <div class="w-1 h-3 bg-neutral-800"></div>
+                <!-- Candle Body displaying María Isabel's exact age -->
+                <div class="w-10 h-24 bg-gradient-to-b from-ruby-600 via-rose-700 to-ruby-900 rounded-md shadow-md border border-ruby-400/40 relative flex flex-col items-center justify-center select-none">
+                    <span class="mariaisabel-age text-base text-gold-300 font-serif font-bold tracking-wider">19</span>
+                    <span class="text-[10px] text-rose-200 uppercase font-cinzel tracking-widest font-semibold">Años</span>
+                </div>
+                <!-- Cake Base -->
+                <div class="w-36 h-7 bg-gradient-to-r from-velvet-950 via-ruby-950 to-velvet-950 rounded-full border border-ruby-600/30 mt-1 shadow-inner"></div>
+            </div>
+
+            <!-- Action Button -->
+            <button id="blow-candle-btn" class="px-7 py-3.5 rounded-full bg-gradient-to-r from-ruby-700 to-rose-600 text-white font-semibold text-sm sm:text-base tracking-wide shadow-lg glow-red active:scale-95 transition-all">
+                🎂 Toca aquí para soplar tu velita
+            </button>
+
+            <!-- Wish Granted Message Container (Centered on God's Blessing) -->
+            <div id="wish-message" class="hidden mt-6 p-5 rounded-2xl bg-velvet-950/95 border border-ruby-500/50 text-left animate-fade-in shadow-2xl">
+                <div class="flex items-center gap-2 text-gold-300 mb-2">
+                    <span class="text-xl">🙏</span>
+                    <h5 class="text-sm sm:text-base font-bold uppercase tracking-wider">¡Deseo Puesto en Manos de Dios!</h5>
+                </div>
+                <p class="text-sm sm:text-base text-rose-50 leading-relaxed font-normal">
+                    Le pido a Dios de todo corazón que guíe cada uno de tus pasos, derrame infinitas bendiciones sobre tus <strong class="text-gold-300 font-semibold"><span class="mariaisabel-age">19</span> años</strong> y haga realidad cada uno de los más puros anhelos de tu alma, mi adorada <strong class="text-white font-semibold">María Isabel</strong>.
+                </p>
+                <!-- Status indicator while confetti shower finishes -->
+                <div id="confetti-status" class="mt-4 py-2 px-3 rounded-xl bg-ruby-900/40 border border-ruby-500/30 text-center text-xs sm:text-sm text-gold-300 font-medium">
+                    ✨ Disfruta la lluvia de bendiciones... Avanzaremos suavemente al terminar ✨
+                </div>
+                <div class="mt-4 pt-3 border-t border-ruby-800/50 text-center">
+                    <button id="skip-to-final-btn" class="text-xs sm:text-sm text-gold-300 font-semibold inline-flex items-center gap-1.5 hover:text-white transition-colors py-1.5 px-3 rounded-lg hover:bg-ruby-900/50">
+                        <span>Ver dedicatoria final</span>
+                        <span>❤️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Memories Card -->
+    <section id="final-section" class="relative z-20 px-4 py-8 max-w-lg mx-auto text-center">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 border border-ruby-500/30">
+            <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-ruby-800 to-rose-600 flex items-center justify-center text-white text-3xl shadow-lg mb-4">
+                👑
+            </div>
+            <h4 class="font-serif text-2xl font-bold text-white mb-3">Para María Isabel</h4>
+            <p class="readable-desc text-sm sm:text-base text-rose-100 font-normal leading-relaxed mb-4">
+                "No importa cuántos kilómetros nos separen, ni qué hora marque el reloj. Donde sea que yo esté, mi corazón siempre caminará a tu lado."
+            </p>
+            <div class="text-xs sm:text-sm text-gold-300 uppercase tracking-widest font-cinzel font-semibold">
+                ❤️ 17 de Septiembre de 2007 • <span class="mariaisabel-age">19</span> Años Bendecidos ❤️
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Modal Notification (Replaces alerts) -->
+    <div id="custom-toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none max-w-xs w-full px-4">
+        <div class="bg-ruby-950/95 border border-ruby-400/60 text-white px-4 py-3.5 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3">
+            <span id="toast-icon" class="text-2xl">🌹</span>
+            <p id="toast-text" class="text-sm font-medium leading-snug"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-20 text-center py-8 text-xs sm:text-sm text-rose-300 font-cinzel font-semibold">
+        Creado con amor infinito para María Isabel • 2026
+    </footer>
+
+    <script>
+        const floatingControls = document.getElementById('floating-controls-bar');
+        let lastScrollPosition = window.scrollY;
+
+        // Auto-hide controls bar when scrolling down or moving into the lower sections
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+
+            // When user scrolls down towards the lower sections of the page
+            if (currentScroll > 60 && currentScroll > lastScrollPosition) {
+                floatingControls.classList.add('-translate-y-24', 'opacity-0', 'pointer-events-none');
+                floatingControls.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            } 
+            // When returning to the very top or scrolling up gently
+            else if (currentScroll <= 40 || currentScroll < lastScrollPosition - 12) {
+                floatingControls.classList.remove('-translate-y-24', 'opacity-0', 'pointer-events-none');
+                floatingControls.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }
+
+            lastScrollPosition = currentScroll;
+        }, { passive: true });
+
+        // Smooth scrolling helper to ensure fluid transitions between sections
+        function smoothScrollTo(elementId, delay = 0) {
+            // Immediately conceal controls during automated transitions to lower sections
+            if (floatingControls) {
+                floatingControls.classList.add('-translate-y-24', 'opacity-0', 'pointer-events-none');
+                floatingControls.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }
+            setTimeout(() => {
+                const target = document.getElementById(elementId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, delay);
+        }
+
+        // Canvas rose petals animation setup
+        const canvas = document.getElementById('petals-canvas');
+        const ctx = canvas.getContext('2d');
+        let petals = [];
+        const petalCount = 28;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Petal constructor
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -20 - Math.random() * 50;
+                this.size = Math.random() * 9 + 8;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1.2 + 0.9;
+                this.angle = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 1.2;
+                this.opacity = Math.random() * 0.5 + 0.4;
+                // Deep ruby and soft red rose tones
+                this.color = Math.random() > 0.3 ? '#be123c' : '#e11d48';
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.015) * 0.8 + this.speedX;
+                this.angle += this.rotationSpeed;
+
+                if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.angle * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+
+                // Draw petal curve
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size / 2, -this.size, -this.size, this.size / 3, 0, this.size);
+                ctx.bezierCurveTo(this.size, this.size / 3, this.size / 2, -this.size, 0, 0);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        // Initialize petals
+        for (let i = 0; i < petalCount; i++) {
+            const p = new Petal();
+            p.y = Math.random() * canvas.height; // Scatter initially
+            petals.push(p);
+        }
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animatePetals);
+        }
+        animatePetals();
+
+        function updateLiveClocks() {
+            try {
+                // Nicaragua Time (UTC-6)
+                const nicaraguaTime = new Date().toLocaleTimeString('es-NI', {
+                    timeZone: 'America/Managua',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+
+                // Spain Time (Europe/Madrid)
+                const spainTime = new Date().toLocaleTimeString('es-ES', {
+                    timeZone: 'Europe/Madrid',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+
+                const nicElem = document.getElementById('time-nicaragua');
+                const espElem = document.getElementById('time-spain');
+                if (nicElem) nicElem.innerText = `Hora: ${nicaraguaTime}`;
+                if (espElem) espElem.innerText = `Hora: ${spainTime}`;
+            } catch (e) {
+                console.error("Error updating timezones:", e);
+            }
+        }
+        setInterval(updateLiveClocks, 1000);
+        updateLiveClocks();
+
+        // Dedicated Font Size switcher: Predeterminada en versión Cómoda (Grande)
+        const fontToggleBtn = document.getElementById('font-toggle-btn');
+        const fontBtnLabel = document.getElementById('font-btn-label');
+        const fontBtnBadge = document.getElementById('font-btn-badge');
+        const fontBtnIcon = document.getElementById('font-btn-icon');
+        
+        // Comienza de forma predeterminada en versión 'Cómoda'
+        let isLargeText = true;
+
+        function applyFontMode(isComfortable, notify = false) {
+            isLargeText = isComfortable;
+            if (isLargeText) {
+                document.body.classList.add('extra-large-text');
+                fontToggleBtn.classList.add('bg-ruby-900', 'border-gold-400', 'ring-1', 'ring-gold-400/40');
+                fontToggleBtn.classList.remove('bg-ruby-950/95', 'border-ruby-400/50');
+                if (fontBtnLabel) {
+                    fontBtnLabel.textContent = "Cómoda";
+                    fontBtnLabel.classList.add('text-gold-300');
+                    fontBtnLabel.classList.remove('text-rose-100');
+                }
+                if (fontBtnIcon) fontBtnIcon.textContent = "A+";
+                if (fontBtnBadge) {
+                    fontBtnBadge.classList.remove('bg-emerald-400');
+                    fontBtnBadge.classList.add('bg-gold-400', 'animate-pulse');
+                }
+                if (notify) showNotification("Modo de lectura cómoda activado", "👓");
+            } else {
+                document.body.classList.remove('extra-large-text');
+                fontToggleBtn.classList.remove('bg-ruby-900', 'border-gold-400', 'ring-1', 'ring-gold-400/40');
+                fontToggleBtn.classList.add('bg-ruby-950/95', 'border-ruby-400/50');
+                if (fontBtnLabel) {
+                    fontBtnLabel.textContent = "Normal";
+                    fontBtnLabel.classList.remove('text-gold-300');
+                    fontBtnLabel.classList.add('text-rose-100');
+                }
+                if (fontBtnIcon) fontBtnIcon.textContent = "Aa";
+                if (fontBtnBadge) {
+                    fontBtnBadge.classList.remove('bg-gold-400', 'animate-pulse');
+                    fontBtnBadge.classList.add('bg-emerald-400');
+                }
+                if (notify) showNotification("Tamaño de letra estándar", "📖");
+            }
+        }
+
+        // Inicializar predeterminada en modo cómoda
+        applyFontMode(true, false);
+
+        fontToggleBtn.addEventListener('click', () => {
+            applyFontMode(!isLargeText, true);
+        });
+
+        function showNotification(text, icon = "🌹") {
+            const toast = document.getElementById('custom-toast');
+            const toastText = document.getElementById('toast-text');
+            const toastIcon = document.getElementById('toast-icon');
+
+            if (!toast || !toastText || !toastIcon) return;
+
+            toastText.textContent = text;
+            toastIcon.textContent = icon;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3200);
+        }
+
+        let isAudioPlaying = false;
+        let synth = null;
+        let melodyLoop = null;
+
+        async function toggleRomanticAudio() {
+            try {
+                await Tone.start();
+
+                if (!synth) {
+                    // Soft, warm melodic synth
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "sine" },
+                        envelope: {
+                            attack: 0.8,
+                            decay: 1.2,
+                            sustain: 0.6,
+                            release: 2.5
+                        }
+                    }).toDestination();
+                    synth.volume.value = -12; // gentle level
+
+                    // Warm chords progression (D minor romantic ballade)
+                    const chordProgression = [
+                        ["F4", "A4", "C5"],
+                        ["D4", "F4", "A4"],
+                        ["Bb3", "D4", "F4"],
+                        ["C4", "E4", "G4"]
+                    ];
+                    let step = 0;
+
+                    melodyLoop = new Tone.Loop(time => {
+                        const chord = chordProgression[step % chordProgression.length];
+                        synth.triggerAttackRelease(chord, "2n", time);
+                        step++;
+                    }, "2n");
+                }
+
+                if (!isAudioPlaying) {
+                    Tone.Transport.start();
+                    melodyLoop.start(0);
+                    isAudioPlaying = true;
+                    document.getElementById('audio-text').textContent = "Pausar";
+                    document.getElementById('audio-icon').innerHTML = "🎶";
+                    showNotification("Melodía romántica iniciada", "🎵");
+                } else {
+                    Tone.Transport.stop();
+                    melodyLoop.stop();
+                    isAudioPlaying = false;
+                    document.getElementById('audio-text').textContent = "Música";
+                    document.getElementById('audio-icon').innerHTML = "▶️";
+                }
+            } catch (err) {
+                console.error("Audio error:", err);
+                showNotification("Toca de nuevo para activar el sonido", "✨");
+            }
+        }
+
+        document.getElementById('audio-toggle-btn').addEventListener('click', toggleRomanticAudio);
+
+        const envelopeWrapper = document.getElementById('envelope-wrapper');
+        const unfoldedLetter = document.getElementById('unfolded-letter');
+        const envelopeBox = document.getElementById('envelope-box');
+        const closeLetterBtn = document.getElementById('close-letter-btn');
+
+        envelopeBox.addEventListener('click', () => {
+            unfoldedLetter.classList.remove('hidden');
+            envelopeBox.classList.add('opacity-40', 'scale-95');
+            showNotification("Has abierto mi corazón", "💌");
+            
+            // Soft chime sound
+            if (window.Tone && Tone.context.state === 'running') {
+                const bell = new Tone.Synth().toDestination();
+                bell.triggerAttackRelease("A5", "8n");
+            }
+        });
+
+        closeLetterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            unfoldedLetter.classList.add('hidden');
+            envelopeBox.classList.remove('opacity-40', 'scale-95');
+            showNotification("Avanzando a tus rosas rojas...", "🌹");
+            // Smoothly glide to the roses section without abrupt jumps
+            smoothScrollTo('rosas-section', 400);
+        });
+
+        function updateExactAge() {
+            // Born September 17, 2007
+            const birthDate = new Date(2007, 8, 17);
+            const now = new Date();
+            let age = now.getFullYear() - birthDate.getFullYear();
+            const monthDiff = now.getMonth() - birthDate.getMonth();
+            const dayDiff = now.getDate() - birthDate.getDate();
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+            document.querySelectorAll('.mariaisabel-age').forEach(el => {
+                el.textContent = age;
+            });
+        }
+        updateExactAge();
+
+        let discoveredRoses = 0;
+        const totalRoses = 4;
+
+        function revealRose(index, card) {
+            const secret = card.querySelector('.rose-secret');
+            const hint = card.querySelector('.rose-hint');
+
+            if (secret.classList.contains('hidden')) {
+                secret.classList.remove('hidden');
+                hint.classList.add('hidden');
+                card.classList.add('border-ruby-400', 'bg-ruby-950/80');
+                discoveredRoses++;
+
+                // Trigger gentle sparkle
+                confetti({
+                    particleCount: 15,
+                    spread: 40,
+                    origin: { y: 0.7 },
+                    colors: ['#e11d48', '#be123c', '#fbbf24']
+                });
+
+                if (discoveredRoses === totalRoses) {
+                    const foundBox = document.getElementById('all-roses-found');
+                    if (foundBox) foundBox.classList.remove('hidden');
+                    showNotification("¡Ramo completado! Descubre tus poemas...", "💐");
+                    // Automatically and smoothly advance to AI poetry generator
+                    smoothScrollTo('poeta-ai-section', 1800);
+                }
+            }
+        }
+
+        let finalScrollTimer = null;
+        const blowBtn = document.getElementById('blow-candle-btn');
+        const candleFlame = document.getElementById('candle-flame');
+        const wishMessage = document.getElementById('wish-message');
+        const skipToFinalBtn = document.getElementById('skip-to-final-btn');
+
+        if (skipToFinalBtn) {
+            skipToFinalBtn.addEventListener('click', () => {
+                if (finalScrollTimer) clearTimeout(finalScrollTimer);
+                smoothScrollTo('final-section', 50);
+            });
+        }
+
+        blowBtn.addEventListener('click', () => {
+            // Extinguish flame animation
+            candleFlame.classList.add('opacity-0', 'scale-50');
+            blowBtn.classList.add('opacity-50', 'pointer-events-none');
+            blowBtn.textContent = "✨ ¡Deseo Puesto en Manos de Dios! ✨";
+            wishMessage.classList.remove('hidden');
+
+            // Burst celebration confetti in Ruby & Gold
+            confetti({
+                particleCount: 110,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#be123c', '#e11d48', '#fbbf24', '#ffffff', '#fda4af']
+            });
+
+            // Secondary gentle waves timed to create a sustained shower
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    angle: 60,
+                    spread: 65,
+                    origin: { x: 0, y: 0.7 },
+                    colors: ['#e11d48', '#fda4af', '#f59e0b']
+                });
+                confetti({
+                    particleCount: 50,
+                    angle: 120,
+                    spread: 65,
+                    origin: { x: 1, y: 0.7 },
+                    colors: ['#e11d48', '#fda4af', '#f59e0b']
+                });
+            }, 550);
+
+            showNotification("¡Plegaria y deseo en manos de Dios!", "🙏");
+
+            // Natively wait until the full confetti shower has completely finished (~6.5s)
+            // so María Isabel can enjoy the animation and read the blessing without being interrupted
+            if (finalScrollTimer) clearTimeout(finalScrollTimer);
+            finalScrollTimer = setTimeout(() => {
+                const confettiStatus = document.getElementById('confetti-status');
+                if (confettiStatus) {
+                    confettiStatus.textContent = "✨ Las bendiciones quedan grabadas en el corazón ✨";
+                }
+                smoothScrollTo('final-section', 200);
+            }, 6500);
+        });
+
+        const heartStage = document.getElementById('heart-stage');
+        const leftHeartHalf = document.getElementById('left-heart-half');
+        const rightHeartHalf = document.getElementById('right-heart-half');
+        const heartCenterPulse = document.getElementById('heart-center-pulse');
+        const toggleHeartBtn = document.getElementById('toggle-heart-union-btn');
+        const heartUnitedCard = document.getElementById('heart-united-card');
+
+        let areHeartsUnited = false;
+
+        function toggleHeartUnion() {
+            areHeartsUnited = !areHeartsUnited;
+
+            if (areHeartsUnited) {
+                // Animate both halves sliding together to form a seamless heart
+                heartStage.classList.remove('gap-4', 'sm:gap-6');
+                heartStage.classList.add('gap-0');
+
+                // Rotate and translate slightly inward to mimic the two lobes of a heart
+                leftHeartHalf.classList.add('translate-x-3', 'rotate-[-6deg]', 'scale-105');
+                rightHeartHalf.classList.add('-translate-x-3', 'rotate-[6deg]', 'scale-105');
+
+                heartCenterPulse.classList.add('scale-125', 'rotate-12');
+                toggleHeartBtn.innerHTML = "✨ Separar de nuevo ✨";
+                heartUnitedCard.classList.remove('hidden');
+
+                // Confetti heart shower in gold and ruby
+                confetti({
+                    particleCount: 45,
+                    spread: 60,
+                    origin: { y: 0.5 },
+                    colors: ['#e11d48', '#be123c', '#fbbf24', '#ffffff']
+                });
+
+                // Play romantic chime if Tone is available
+                if (window.Tone && Tone.context.state === 'running') {
+                    const harp = new Tone.PolySynth(Tone.Synth).toDestination();
+                    harp.volume.value = -10;
+                    harp.triggerAttackRelease(["C5", "E5", "G5", "C6"], "4n");
+                }
+
+                showNotification("¡Nuestros corazones laten como uno solo!", "💖");
+            } else {
+                // Separate back gracefully
+                heartStage.classList.remove('gap-0');
+                heartStage.classList.add('gap-4', 'sm:gap-6');
+
+                leftHeartHalf.classList.remove('translate-x-3', 'rotate-[-6deg]', 'scale-105');
+                rightHeartHalf.classList.remove('-translate-x-3', 'rotate-[6deg]', 'scale-105');
+
+                heartCenterPulse.classList.remove('scale-125', 'rotate-12');
+                toggleHeartBtn.innerHTML = "❤️ Toca para unir nuestros corazones";
+                heartUnitedCard.classList.add('hidden');
+            }
+        }
+
+        if (toggleHeartBtn) {
+            toggleHeartBtn.addEventListener('click', toggleHeartUnion);
+        }
+
+        // ==========================================
+        // GEMINI API ROMANTIC POETRY & BLESSINGS
+        // ==========================================
+        const geminiSystemPrompt = `Eres un poeta romántico, sensible, profundamente respetuoso y sincero. Estás escribiendo dedicatorias poéticas, oraciones y cartas personalizadas de amor y bendición para María Isabel en el día de su cumpleaños número 19 (nacida el 17 de septiembre de 2007).
+Contexto esencial de su historia:
+- Ambos comparten sus mismas raíces de Nicaragua. Actualmente él vive en España y ella en Nicaragua (un amor a distancia firme, lleno de fe, respeto y paciencia).
+- Se conocieron a través de Facebook, un acontecimiento que atesoran como una bendición guiada por Dios y el destino.
+- A María Isabel le gusta el color rojo (la calidez de las rosas rojas, el terciopelo y la pasión pura).
+- Siempre ten presente la bendición de Dios, el agradecimiento por su vida y la sincera promesa del reencuentro en persona.
+- Escribe en un español dulce, cálido, poético y muy emotivo.
+- Organiza el texto en estrofas o párrafos claros y perfectamente legibles en teléfonos móviles. No uses formato Markdown excesivo (máximo cursivas o negritas discretas). Finaliza siempre con un abrazo tierno desde el corazón.`;
+
+        async function callGeminiPoetWithBackoff(userQuery, maxRetries = 3) {
+            const apiKey = ""; // Canvas will automatically provide it at runtime
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{
+                    parts: [{ text: userQuery }]
+                }],
+                systemInstruction: {
+                    parts: [{ text: geminiSystemPrompt }]
+                }
+            };
+
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP Error: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const candidateText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (candidateText && candidateText.trim().length > 0) {
+                        return candidateText.trim();
+                    }
+                    throw new Error("Respuesta vacía recibida");
+                } catch (err) {
+                    if (attempt === maxRetries - 1) {
+                        throw err;
+                    }
+                    // Exponential backoff: 1s, 2s, 4s (without polluting console)
+                    const delay = Math.pow(2, attempt) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        const aiCustomPrompt = document.getElementById('ai-custom-prompt');
+        const clearPromptBtn = document.getElementById('clear-prompt-btn');
+        const generateAiBtn = document.getElementById('generate-ai-btn');
+        const regenerateAiBtn = document.getElementById('regenerate-ai-btn');
+        const aiLoadingState = document.getElementById('ai-loading-state');
+        const aiResultCard = document.getElementById('ai-result-card');
+        const aiPoemContent = document.getElementById('ai-poem-content');
+        const copyAiBtn = document.getElementById('copy-ai-btn');
+        const aiChips = document.querySelectorAll('.ai-chip');
+
+        let lastPromptUsed = "Escribe un poema emotivo y dulce sobre nuestro amor a distancia, celebrando los 19 años de María Isabel.";
+
+        // Handle prompt chip selection
+        aiChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                aiChips.forEach(c => c.classList.remove('bg-ruby-900', 'border-gold-400', 'text-white'));
+                chip.classList.add('bg-ruby-900', 'border-gold-400', 'text-white');
+                aiCustomPrompt.value = chip.textContent.trim();
+                lastPromptUsed = chip.getAttribute('data-prompt');
+                clearPromptBtn.classList.remove('hidden');
+            });
+        });
+
+        // Toggle clear prompt button
+        if (aiCustomPrompt) {
+            aiCustomPrompt.addEventListener('input', () => {
+                if (aiCustomPrompt.value.trim().length > 0) {
+                    clearPromptBtn.classList.remove('hidden');
+                    lastPromptUsed = aiCustomPrompt.value.trim();
+                } else {
+                    clearPromptBtn.classList.add('hidden');
+                }
+            });
+        }
+
+        if (clearPromptBtn) {
+            clearPromptBtn.addEventListener('click', () => {
+                aiCustomPrompt.value = '';
+                clearPromptBtn.classList.add('hidden');
+                aiChips.forEach(c => c.classList.remove('bg-ruby-900', 'border-gold-400', 'text-white'));
+                lastPromptUsed = "Escribe un poema emotivo y dulce sobre nuestro amor a distancia, celebrando los 19 años de María Isabel.";
+            });
+        }
+
+        async function executeAiPoemGeneration() {
+            if (generateAiBtn.disabled) return;
+
+            const queryText = aiCustomPrompt.value.trim() || lastPromptUsed;
+
+            // Update UI to loading state
+            generateAiBtn.disabled = true;
+            generateAiBtn.classList.add('opacity-50');
+            aiLoadingState.classList.remove('hidden');
+            aiResultCard.classList.add('hidden');
+
+            try {
+                const generatedPoem = await callGeminiPoetWithBackoff(queryText);
+
+                aiPoemContent.innerHTML = generatedPoem.replace(/\n/g, '<br>');
+                aiLoadingState.classList.add('hidden');
+                aiResultCard.classList.remove('hidden');
+
+                // Celebrate with soft ruby confetti
+                confetti({
+                    particleCount: 35,
+                    spread: 60,
+                    origin: { y: 0.6 },
+                    colors: ['#e11d48', '#be123c', '#fbbf24']
+                });
+
+                showNotification("¡Dedicatoria creada con éxito!", "✨");
+            } catch (error) {
+                aiLoadingState.classList.add('hidden');
+                aiResultCard.classList.remove('hidden');
+                // Graceful, heartwarming fallback poem if the network request fails
+                aiPoemContent.innerHTML = `María Isabel de mi alma,<br><br>
+Ni las distancias más inmensas entre Nicaragua y España podrán ensombrecer la luz que irradias en tus 19 años. Cada latido mío guarda tu nombre, cada oración a Dios pide por tu felicidad, y cada amanecer me recuerda que conocerte en Facebook fue el regalo más hermoso de mi vida.<br><br>
+Pronto ese abrazo dejará de ser un sueño y florecerá entre tus manos como las rosas rojas que tanto amas.<br><br>
+<em>Feliz cumpleaños, mi reina hermosa. ❤️</em>`;
+                showNotification("Mostrando poema desde el corazón", "🌹");
+            } finally {
+                generateAiBtn.disabled = false;
+                generateAiBtn.classList.remove('opacity-50');
+            }
+        }
+
+        if (generateAiBtn) {
+            generateAiBtn.addEventListener('click', executeAiPoemGeneration);
+        }
+
+        if (regenerateAiBtn) {
+            regenerateAiBtn.addEventListener('click', executeAiPoemGeneration);
+        }
+
+        // Copy generated poem to clipboard using document.execCommand
+        if (copyAiBtn) {
+            copyAiBtn.addEventListener('click', () => {
+                const textToCopy = aiPoemContent.innerText || aiPoemContent.textContent;
+                const tempTextarea = document.createElement('textarea');
+                tempTextarea.value = textToCopy;
+                tempTextarea.style.position = 'fixed';
+                tempTextarea.style.left = '-9999px';
+                tempTextarea.style.top = '0';
+                document.body.appendChild(tempTextarea);
+                tempTextarea.focus();
+                tempTextarea.select();
+
+                try {
+                    document.execCommand('copy');
+                    showNotification("¡Poema copiado al portapapeles!", "📋");
+                } catch (e) {
+                    showNotification("No se pudo copiar automáticamente", "⚠️");
+                }
+                document.body.removeChild(tempTextarea);
+            });
+        }
+    </script>
+</body>
+</html>
